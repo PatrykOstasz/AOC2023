@@ -127,7 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AOC2023.cpp" />
+    <ClCompile Include="BidCalculator.cpp" />
+    <ClCompile Include="HandValidator.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Hand.cpp" />
+    <ClCompile Include="HandParser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BidCalculator.h" />
+    <ClInclude Include="Hand.h" />
+    <ClInclude Include="HandParser.h" />
+    <ClInclude Include="HandValidator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
