@@ -4,12 +4,13 @@
 
 #include "Hand.h"
 
-class HandValidator
+class HandComparer
 {
 public:
-	HandValidator() = default;
-	void validateByFirstOrderRule(const Hand& hand);
-	void validateBySecondOrderRule();
+	HandComparer() = default;
+	void compareByFirstOrderRule(const Hand& hand);
+	void compareBySecondOrderRule();
+	std::vector<Hand> justGlueIt();
 
 private:
 	void groupSimilarHands(const std::vector<unsigned>& vec, const Hand& hand);

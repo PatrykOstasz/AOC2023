@@ -24,6 +24,7 @@
     <ProjectGuid>{95d6ef2f-79a2-4182-86fe-6281cb82bd20}</ProjectGuid>
     <RootNamespace>AOC2023</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>AOC2023-7</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,16 +129,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BidCalculator.cpp" />
-    <ClCompile Include="HandValidator.cpp" />
+    <ClCompile Include="HandComparer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Hand.cpp" />
     <ClCompile Include="HandParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BidCalculator.h" />
     <ClInclude Include="Hand.h" />
     <ClInclude Include="HandParser.h" />
-    <ClInclude Include="HandValidator.h" />
+    <ClInclude Include="HandComparer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,14 +2,10 @@
 
 #include <string>
 
-class Hand
+struct Hand
 {
-public:
-	Hand(const std::string& in_cards, unsigned int in_bid);
-	std::string getCards() const { return cards; }
-	unsigned int getBid() const { return bid; }
+	Hand(const std::string& in_cards, unsigned int in_bid) : cards(in_cards), bid(in_bid) {}
 
-private:
 	std::string cards;
 	unsigned int bid;
 };

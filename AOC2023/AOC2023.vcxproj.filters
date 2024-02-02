@@ -21,10 +21,7 @@
     <ClCompile Include="HandParser.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Hand.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="HandValidator.cpp">
+    <ClCompile Include="HandComparer.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="BidCalculator.cpp">
@@ -38,7 +35,7 @@
     <ClInclude Include="Hand.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="HandValidator.h">
+    <ClInclude Include="HandComparer.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="BidCalculator.h">

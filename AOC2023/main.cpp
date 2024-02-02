@@ -1,15 +1,16 @@
 ﻿#include <iostream>
 
 #include "HandParser.h"
-#include "HandValidator.h"
+#include "HandComparer.h"
 
 int main()
 {
-    HandValidator validator;
+    HandComparer handComparer;
     auto myHands = HandParser::parse("input.txt");
 
     for (auto& hand : myHands)
     {
-        validator.validateByFirstOrderRule(hand);
+        handComparer.compareByFirstOrderRule(hand);
     }
+    handComparer.compareBySecondOrderRule();
 }
