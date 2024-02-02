@@ -41,6 +41,11 @@ void HandComparer::compareBySecondOrderRule()
 	std::sort(begin(fullHouse), end(fullHouse), isCardGreater);
 }
 
+std::vector<Hand> HandComparer::justGlueIt()
+{
+	return std::vector<Hand>();
+}
+
 void HandComparer::groupSimilarHands(const std::vector<unsigned>& vec, const Hand& hand)
 {
 	// can it be simplified? switch is fe
