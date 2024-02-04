@@ -1,28 +1,26 @@
 #pragma once
 
-#include<vector>
+#include <vector>
+#include <map>
 
 #include "Hand.h"
 
 class HandComparer
 {
 public:
-	HandComparer() = default;
-	void compareByFirstOrderRule(const Hand& hand);
-	void compareBySecondOrderRule();
-	std::vector<Hand> justGlueIt();
+	HandComparer();
+
+	void compareAndSort(const std::vector<Hand>& hands);
+	std::vector<Hand> getSortedHands() const;
 
 private:
+	void compareByFirstOrderRule(const std::vector<Hand>& hands);
+	void compareBySecondOrderRule();
 	void groupSimilarHands(const std::vector<unsigned>& vec, const Hand& hand);
 
 private:
-	std::vector<Hand> fiveOfAKind;
-	std::vector<Hand> fourOfAKind;
-	std::vector<Hand> fullHouse;
-	std::vector<Hand> threeOfAKind;
-	std::vector<Hand> twoPairs;
-	std::vector<Hand> pairs;
-	std::vector<Hand> oldestCard;
+	std::vector< std::vector<Hand> > handsGrouped;
+	std::map< unsigned, std::vector<Hand>* > recognizeToType;
 
 };
 

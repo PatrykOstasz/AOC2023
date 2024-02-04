@@ -5,8 +5,6 @@
 
 #include "Hand.h"
 
-class Hand;
-
 class HandParser
 {
 public:
