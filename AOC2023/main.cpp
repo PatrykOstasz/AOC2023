@@ -13,6 +13,11 @@ int main()
 
     const auto handsSorted = handComparer.getSortedHands();
 
+    for (auto& x : handsSorted)
+    {
+        std::cout << x.cards << std::endl;
+    }
+
     auto solution = BidCalculator::calculate(handsSorted);
     std::cout << solution << std::endl;
 

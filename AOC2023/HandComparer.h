@@ -10,11 +10,12 @@ class HandComparer
 public:
 	HandComparer();
 
-	void compareAndSort(const std::vector<Hand>& hands);
+	void compareAndSort(std::vector<Hand>& hands);
 	std::vector<Hand> getSortedHands() const;
 
 private:
-	void compareByFirstOrderRule(const std::vector<Hand>& hands);
+	void compareByFirstOrderRule(std::vector<Hand>& hands);
+	Hand modifyHandByJoker(Hand h);
 	void compareBySecondOrderRule();
 	void groupSimilarHands(const std::vector<unsigned>& vec, const Hand& hand);
 
