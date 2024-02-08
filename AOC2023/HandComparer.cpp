@@ -1,48 +1,43 @@
 #include "HandComparer.h"
 
 #include <algorithm>
-#include <iostream>
 #include <numeric>
 
 constexpr auto SOLUTION2 = 1;
 
 HandComparer::HandComparer() 
 {
-	std::vector<unsigned> numSumsOfTypes{ 5, 7, 9 , 11, 13, 17, 25 };
+	const auto numSumsOfTypes = std::vector<unsigned>({ 5, 7, 9 , 11, 13, 17, 25 });
 
 	handsGrouped.resize(numSumsOfTypes.size());
 
 	for (auto i = 0; i < numSumsOfTypes.size(); ++i)
-	{
-		recognizeToType.insert(std::make_pair(numSumsOfTypes[i], &handsGrouped[i]));
-	}
+		numericalToType.insert(std::make_pair(numSumsOfTypes[i], &handsGrouped[i]));
 }
 
 
-void HandComparer::compareAndSort(std::vector<Hand>& hands)
+void HandComparer::compareAndSort(const std::vector<Hand>& hands)
 {
 	compareByFirstOrderRule(hands);
 	compareBySecondOrderRule();
 }
 
-void HandComparer::compareByFirstOrderRule(std::vector<Hand>& hands)
+void HandComparer::compareByFirstOrderRule(const std::vector<Hand>& hands)
 {
 	for (const auto& hand : hands)
 	{
-		Hand modifiedHand {"", 0};
+		auto handModified = Hand(hand);
+
 		if (SOLUTION2)
+			handModified = modifyHandTypeByJoker(hand);
+
+		auto cardsGroupCount = std::vector<unsigned>();
+		cardsGroupCount.reserve(handModified.cards.size());
+
+		for (auto it = cbegin(handModified.cards); it != cend(handModified.cards); it++)
 		{
-			modifiedHand = modifyHandByJoker(hand);
-		}
-
-		std::vector<unsigned int> cardsGroupCount;
-
-		cardsGroupCount.reserve(modifiedHand.cards.size());
-
-		for (auto it = begin(modifiedHand.cards); it != end(modifiedHand.cards); it++)
-		{
-			const auto typesOfCardCount = std::count(begin(modifiedHand.cards), end(modifiedHand.cards), *it);
-			auto cardGroupCount = static_cast<unsigned int>(typesOfCardCount);
+			const auto typesOfCardCount = std::count(begin(handModified.cards), end(handModified.cards), *it);
+			const auto cardGroupCount = static_cast<unsigned>(typesOfCardCount);
 			cardsGroupCount.push_back(cardGroupCount);
 		}
 
@@ -50,70 +45,56 @@ void HandComparer::compareByFirstOrderRule(std::vector<Hand>& hands)
 	}
 }
 
-Hand HandComparer::modifyHandByJoker(Hand h)
+Hand HandComparer::modifyHandTypeByJoker(Hand hand)
 {
+	if (hand.cards == "JJJJJ")
+		std::replace(begin(hand.cards), end(hand.cards), 'J', 'A');
+	
+	if (std::find(cbegin(hand.cards), cend(hand.cards), 'J') == cend(hand.cards)) return hand;
+
 	const std::string strengthMinusJ = "23456789TQKA";
-	std::map<char, unsigned> cardToCount;
 
-	for (auto& s : strengthMinusJ)
+	auto cardToCount = std::map<char, unsigned>();
+	std::for_each(cbegin(strengthMinusJ), cend(strengthMinusJ), [&](const auto& s) { cardToCount.insert(std::make_pair(s, 0)); }); // jako alternatywa do przypomnienia
+
+	for (const auto& card : hand.cards)
 	{
-		cardToCount.insert(std::make_pair(s, 0));
+		if (card == 'J') continue;
+		cardToCount[card]++;
 	}
 
-	for (const auto& s : h.cards)
+	auto maxComparer = [&strengthMinusJ](const auto& elem1, const auto& elem2)
 	{
-		if (s == 'J') continue;
-		cardToCount[s]++;
-	}
+		if (elem1.second != elem2.second) return elem1.second < elem2.second;
 
-	if (std::find(begin(h.cards), end(h.cards), 'J') != end(h.cards))
-	{
+		const auto card1 = static_cast<unsigned>(strengthMinusJ.find(elem1.first));
+		const auto card2 = static_cast<unsigned>(strengthMinusJ.find(elem2.first));
 
-		if (h.cards == "JJJJJ")
-		{
-			std::replace(begin(h.cards), end(h.cards), 'J', 'A');
-		}
+		if (card1 == card2) return false;
 
-		auto maxComparer = [&](const auto& elem1, const auto& elem2)
-		{
-			if (elem1.second == elem2.second)
-			{
-				auto card1 = static_cast<unsigned>(strengthMinusJ.find(elem1.first));
-				auto card2 = static_cast<unsigned>(strengthMinusJ.find(elem2.first));
+		return card1 < card2;
+	};
+	const auto maxElement = std::max_element(cbegin(cardToCount), cend(cardToCount), maxComparer);
 
-				if (card1 == card2) return false;
+	std::replace(begin(hand.cards), end(hand.cards), 'J', maxElement->first);
 
-				return card1 < card2;
-
-			}
-			return elem1.second < elem2.second;
-		};
-
-		auto maxElement = std::max_element(begin(cardToCount), end(cardToCount), maxComparer);
-		std::replace(begin(h.cards), end(h.cards), 'J', maxElement->first);
-
-		return h;
-	}
-	return h;
+	return hand;
 
 }
 
 void HandComparer::compareBySecondOrderRule()
 {
-	std::string strength = "23456789TJQKA";
-	if (SOLUTION2)
-	{
-		strength = "J23456789TQKA";
-	}
+   std::string strength = SOLUTION2 ? "J23456789TQKA" : "23456789TJQKA";
+
 	auto isCardGreater = [&](const auto& hand1, const auto& hand2) 
 	{
-		std::string cards1 = hand1.cards;
-		std::string cards2 = hand2.cards;
+		const std::string cards1 = hand1.cards;
+		const std::string cards2 = hand2.cards;
 
-		for (int i = 0; i < cards1.size(); ++i)
+		for (auto i = 0; i < cards1.size(); ++i)
 		{
-			auto card1 = static_cast<unsigned>(strength.find(cards1.at(i)));
-			auto card2 = static_cast<unsigned>(strength.find(cards2.at(i)));
+			const auto card1 = static_cast<unsigned>(strength.find(cards1.at(i)));
+			const auto card2 = static_cast<unsigned>(strength.find(cards2.at(i)));
 
 			if (card1 == card2) continue;
 
@@ -122,23 +103,21 @@ void HandComparer::compareBySecondOrderRule()
 	};
 	
 	for (auto& hand : handsGrouped) 
-	{
 		std::sort(begin(hand), end(hand), isCardGreater);
-	}
 }
 
 std::vector<Hand> HandComparer::getSortedHands() const
 {
-	std::vector<Hand> output;
+	auto handsSorted = std::vector<Hand>();
+
 	for (const auto& hand : handsGrouped)
-	{
-		output.insert(end(output), cbegin(hand), cend(hand));
-	}
-	return output;
+		handsSorted.insert(end(handsSorted), cbegin(hand), cend(hand));
+
+	return handsSorted;
 }
 
-void HandComparer::groupSimilarHands(const std::vector<unsigned>& vec, const Hand& hand)
+void HandComparer::groupSimilarHands(const std::vector<unsigned>& comparer, const Hand& hand)
 {
-	const auto magicNumber = std::accumulate(cbegin(vec), cend(vec), 0);
-	recognizeToType[magicNumber]->push_back(hand);
+	const auto numericalType = std::accumulate(cbegin(comparer), cend(comparer), 0);
+	numericalToType[numericalType]->push_back(hand);
 }
