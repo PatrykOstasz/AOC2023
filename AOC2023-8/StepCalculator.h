@@ -4,36 +4,35 @@
 
 #include <numeric>
 
-namespace math {
+template <typename M, typename N>
+constexpr unsigned long long lcm(const M& m, const N& n) {
+	return std::lcm(m, n);
+}
 
-	template <typename M, typename N>
-	constexpr unsigned long long lcm(const M& m, const N& n) {
-		return std::lcm(m, n);
-	}
-
-	template <typename M, typename ...Rest>
-	constexpr unsigned long long lcm(const M& first, const Rest&... rest) {
-		return std::lcm(first, lcm(rest...));
-	}
+template <typename M, typename ...Rest>
+constexpr unsigned long long lcm(const M& first, const Rest&... rest) {
+	return std::lcm(first, lcm(rest...));
 }
 
 class StepCalculator
 {
 public:
-	StepCalculator() = default;
+	StepCalculator(const NetworkMap& in_map);
 
-	static void findParallelNodes(const NetworkMap& map);
-	static void calculateSteps(const NetworkMap& map);
-	static void calculateParallelSteps(const NetworkMap& map);
-	static unsigned long long getSolution();
+	void calculatePart1();
+	void calculatePart2();
+	unsigned long long getSolution() const;
 
-	static unsigned long long caluclateLCM(const std::vector<long> & steps)
-	{
-		return math::lcm(20221, 16343, 16897, 21883, 19667, 13019);
-	}
+private:
+	void calculateSteps(std::string& loc, unsigned long& counter);
+	unsigned long long caluclateLCM(const std::vector<long> & steps);
 
-	static unsigned long long solution;
-	static std::vector<std::string> parallelNodes;
-	static std::vector<long> parallelSteps;
+	NetworkMap map;
+	std::vector<std::string> parallelNodes;
+	std::vector<long> parallelSteps;
+
+	unsigned directionIdx;
+	unsigned maxDirectionIdx;
+	unsigned long long solution;
 };
 

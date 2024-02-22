@@ -1,13 +1,11 @@
 #include "StepCalculator.h"
-#include <iostream>
+
 #include <algorithm>
 
-unsigned long long StepCalculator::solution = 0;
-std::vector<long> StepCalculator::parallelSteps{};
-std::vector<std::string> StepCalculator::parallelNodes{};
-
-void StepCalculator::findParallelNodes(const NetworkMap& map)
+StepCalculator::StepCalculator(const NetworkMap& in_map) : map(in_map), directionIdx(0), solution(0)
 {
+	maxDirectionIdx = static_cast<unsigned>(map.navigationPattern.size()) - 1;
+
 	for (const auto& node : map.network)
 	{
 		if (node.first[2] == 'A')
@@ -15,71 +13,65 @@ void StepCalculator::findParallelNodes(const NetworkMap& map)
 	}
 }
 
-void StepCalculator::calculateSteps(const NetworkMap& map)
+void StepCalculator::calculatePart1()
 {
-	const auto maxDirectionIdx = map.navigationPattern.size() - 1;
-	auto directionIdx = 0;
-
 	std::string location = "AAA";
+	auto parallelStepsCounter = 0UL;
+
 	while (location != "ZZZ")
 	{
-		auto networkNode = map.network.find(location);
-		if (directionIdx > maxDirectionIdx)
-			directionIdx = 0;
-
-
-		if (map.navigationPattern[directionIdx] == 'L')
-		{
-			location = map.network.find(networkNode->second.first)->first;
-			solution++;
-		}
-		else
-		{
-			location = map.network.find(networkNode->second.second)->first;
-			solution++;
-		}
-
-		directionIdx++;
+		calculateSteps(location, parallelStepsCounter);
 	}
+	solution = parallelStepsCounter;
 }
 
-void StepCalculator::calculateParallelSteps(const NetworkMap& map)
+void StepCalculator::calculatePart2()
 {
-	const auto maxDirectionIdx = map.navigationPattern.size() - 1;
-	static auto directionIdx = 0;
-
 	for (auto& location : parallelNodes)
 	{
-		unsigned long parallelStepsCounter = 0;
-
+		auto parallelStepsCounter = 0UL;
 		while (location[2] != 'Z')
 		{
-			auto networkNode = map.network.find(location);
-
-			if (directionIdx > maxDirectionIdx)
-				directionIdx = 0;
-
-			if (map.navigationPattern[directionIdx] == 'L')
-			{
-				location = map.network.find(networkNode->second.first)->first;
-				parallelStepsCounter++;
-			}
-			else
-			{
-				location = map.network.find(networkNode->second.second)->first;
-				parallelStepsCounter++;
-			}
-			directionIdx++;
+			calculateSteps(location, parallelStepsCounter);
 		}
-		std::cout << parallelStepsCounter << std::endl;
 		parallelSteps.push_back(parallelStepsCounter);
 	}
 
 	solution = caluclateLCM(parallelSteps);
 }
 
-unsigned long long StepCalculator::getSolution()
+unsigned long long StepCalculator::getSolution() const
 {
 	return solution;
 }
+
+void StepCalculator::calculateSteps(std::string& loc, unsigned long& counter)
+{
+	auto networkNode = map.network.find(loc);
+
+	if (directionIdx > maxDirectionIdx)
+		directionIdx = 0;
+
+	//divide this first-second-first into two variables for readibility
+	if (map.navigationPattern[directionIdx] == 'L')
+	{
+		loc = map.network.find(networkNode->second.first)->first;
+		counter++;
+	}
+	else
+	{
+		loc = map.network.find(networkNode->second.second)->first;
+		counter++;
+	}
+	directionIdx++;
+}
+
+unsigned long long StepCalculator::caluclateLCM(const std::vector<long>& steps)
+{
+	// needs to realistically unpack this vector to function or
+	// change to different method
+	return lcm(20221, 16343, 16897, 21883, 19667, 13019);
+}
+
+
 

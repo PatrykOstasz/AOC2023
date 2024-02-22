@@ -5,10 +5,12 @@
 
 int main()
 {
-    auto output = MapParser::parse("input.txt");
-    StepCalculator::calculateSteps(output);
+    const auto networkMap = MapParser::parse("input.txt");
 
-    StepCalculator::findParallelNodes(output);
-    //StepCalculator::calculateParallelSteps(output);
-    std::cout << StepCalculator::getSolution() << std::endl;
+    StepCalculator stepCalculator(networkMap);
+    stepCalculator.calculatePart1();
+    std::cout << stepCalculator.getSolution() << std::endl;
+
+    stepCalculator.calculatePart2();
+    std::cout << stepCalculator.getSolution() << std::endl;
 }
