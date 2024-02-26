@@ -3,9 +3,9 @@
 #include <fstream>
 #include <iostream>
 
-NetworkMap MapParser::parse(const std::string& filename)
+NavigationMap MapParser::parse(const std::string& filename)
 {
-	auto output = NetworkMap();
+	auto output = NavigationMap();
 
 	std::ifstream inputFile;
 	inputFile.open(filename.c_str());
@@ -27,7 +27,7 @@ NetworkMap MapParser::parse(const std::string& filename)
 		output.addNode(location, nodeLeft, nodeRight);
 	}
 
-	output.setNavigationPattern(networkPattern);
+	output.setDirectionPattern(networkPattern);
 
 	inputFile.close();
 

@@ -129,12 +129,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NetworkMap.cpp" />
+    <ClCompile Include="NavigationMap.cpp" />
     <ClCompile Include="MapParser.cpp" />
     <ClCompile Include="StepCalculator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NetworkMap.h" />
+    <ClInclude Include="NavigationMap.h" />
     <ClInclude Include="MapParser.h" />
     <ClInclude Include="StepCalculator.h" />
   </ItemGroup>

@@ -2,11 +2,11 @@
 
 #include <algorithm>
 
-StepCalculator::StepCalculator(const NetworkMap& in_map) : map(in_map), directionIdx(0), solution(0)
+StepCalculator::StepCalculator(const NavigationMap& navMap) : map(navMap), directionIdx(0), solution(0)
 {
-	maxDirectionIdx = static_cast<unsigned>(map.navigationPattern.size()) - 1;
+	maxDirectionIdx = static_cast<unsigned>(map.directionPattern.size()) - 1;
 
-	for (const auto& node : map.network)
+	for (const auto& node : map.navMap)
 	{
 		if (node.first[2] == 'A')
 			parallelNodes.push_back(node.first);
@@ -16,7 +16,7 @@ StepCalculator::StepCalculator(const NetworkMap& in_map) : map(in_map), directio
 void StepCalculator::calculatePart1()
 {
 	std::string location = "AAA";
-	auto parallelStepsCounter = 0UL;
+	auto parallelStepsCounter = 0ULL;
 
 	while (location != "ZZZ")
 	{
@@ -29,7 +29,7 @@ void StepCalculator::calculatePart2()
 {
 	for (auto& location : parallelNodes)
 	{
-		auto parallelStepsCounter = 0UL;
+		auto parallelStepsCounter = 0ULL;
 		while (location[2] != 'Z')
 		{
 			calculateSteps(location, parallelStepsCounter);
@@ -45,33 +45,37 @@ unsigned long long StepCalculator::getSolution() const
 	return solution;
 }
 
-void StepCalculator::calculateSteps(std::string& loc, unsigned long& counter)
+void StepCalculator::calculateSteps(std::string& loc, unsigned long long& counter)
 {
-	auto networkNode = map.network.find(loc);
+	auto networkNode = map.navMap.find(loc);
 
 	if (directionIdx > maxDirectionIdx)
 		directionIdx = 0;
 
-	//divide this first-second-first into two variables for readibility
-	if (map.navigationPattern[directionIdx] == 'L')
-	{
-		loc = map.network.find(networkNode->second.first)->first;
+	auto& nextLocationPair = networkNode->second;
+	if (map.directionPattern[directionIdx] == 'L')
+	{	
+		std::string nextLocationLeft = nextLocationPair.first;
+		auto newNode = map.navMap.find(nextLocationLeft);
+		loc = newNode->first;
 		counter++;
 	}
 	else
 	{
-		loc = map.network.find(networkNode->second.second)->first;
+		std::string nextLocationRight = nextLocationPair.second;
+		auto newNode = map.navMap.find(nextLocationRight);
+		loc = newNode->first;
 		counter++;
 	}
 	directionIdx++;
 }
 
-unsigned long long StepCalculator::caluclateLCM(const std::vector<long>& steps)
+unsigned long long StepCalculator::caluclateLCM(const std::vector<unsigned long long>& steps)
 {
-	// needs to realistically unpack this vector to function or
-	// change to different method
-	return lcm(20221, 16343, 16897, 21883, 19667, 13019);
+	static auto result = steps[0];
+	for (int i = 1; i < steps.size(); ++i)
+	{
+		result = std::lcm(result, steps[i]);
+	}
+	return result;
 }
-
-
-

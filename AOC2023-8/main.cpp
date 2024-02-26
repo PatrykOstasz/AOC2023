@@ -3,7 +3,7 @@
 #include "MapParser.h"
 #include "StepCalculator.h"
 
-int main()
+auto main() -> int
 {
     const auto networkMap = MapParser::parse("input.txt");
 

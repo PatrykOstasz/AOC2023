@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "NetworkMap.h"
+#include "NavigationMap.h"
 
 class MapParser
 {
 public:
-	static NetworkMap parse(const std::string& filename);
+	static NavigationMap parse(const std::string& filename);
 };
 

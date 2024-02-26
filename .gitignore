@@ -1,4 +1,8 @@
 *.vs*
 *x64*
 *tlog*
+*user*
+*.vsidx
+*.suo
+*.db
 
