@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OASIS.cpp" />
     <ClCompile Include="OASISReportParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OASIS.h" />
     <ClInclude Include="OASISReportParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

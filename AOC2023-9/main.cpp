@@ -1,15 +1,16 @@
 ﻿#include <iostream>
 
+#include "OASIS.h"
 #include "OASISReportParser.h"
 
 int main()
 {
-    const auto output = OASISReportParser::parse("input.txt");
+    const auto readings = OASISReportParser::parse("input.txt");
 
-    for (const auto& vec : output)
-    {
-        for (const auto reading : vec)
-            std::cout << reading << " ";
-        std::cout << std::endl;
-    }
+    OASIS oasis(readings);
+
+    bool isPart1 = true, isPart2 = false;
+    auto solution = oasis.calculateSolution(isPart1);
+    std::cout << solution << std::endl;
 }
+
