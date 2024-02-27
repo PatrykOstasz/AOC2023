@@ -3,14 +3,15 @@
 #include "OASIS.h"
 #include "OASISReportParser.h"
 
+constexpr auto ISPART1 = false;
+
 int main()
 {
     const auto readings = OASISReportParser::parse("input.txt");
 
     OASIS oasis(readings);
 
-    bool isPart1 = true, isPart2 = false;
-    auto solution = oasis.calculateSolution(isPart1);
+    auto solution = oasis.calculateSolution(ISPART1);
     std::cout << solution << std::endl;
 }
 

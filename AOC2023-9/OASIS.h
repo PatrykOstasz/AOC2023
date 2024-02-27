@@ -10,7 +10,8 @@ public:
 private:
 	void calculateDifferences(std::vector<long long>& diff);
     bool allZeroes(const std::vector<long long>& diff);
-	void calculatePredictedValues(const std::vector<long long>& partial);
+	void calculatePredictedValues(const std::vector<long long>& partial, bool isPart1);
+	void calculatePart2Differences(std::vector<long long>& in, std::vector<long long>& out);
 
 	std::vector<std::vector<long long>> readings;
 	std::vector<long long> predictedValues;
